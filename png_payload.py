@@ -1,3 +1,4 @@
+import os
 import zlib
 import struct
 import argparse
@@ -24,7 +25,7 @@ def generate_payload(image_path, php_code, insert_offset):
 
         convert_image_path = image_path[:-4] + "-Indexed-color.png"
         image.convert("P", colors=256).save(convert_image_path)
-        image = Image.open(convert_image_path)
+        # image = Image.open(convert_image_path)
 
         with open(convert_image_path, "rb") as f:
             data = f.read()
@@ -77,6 +78,11 @@ def generate_payload(image_path, php_code, insert_offset):
 
     print("[*] Payload injected successfully.")
     print(f"[*] Output saved to: {output_path}")
+
+    convert_image_path = image_path[:-4] + "-Indexed-color.png"
+
+    if os.path.exists(convert_image_path):
+        os.remove(convert_image_path)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
